@@ -21,7 +21,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var password:String
     private lateinit var signUpPd: ProgressDialog
 
-    val emailRegex = Regex(
+    private val emailRegex = Regex(
         "^\\s*([a-zA-Z0-9\\.\\+\\_\\-]+)@([a-zA-Z0-9\\.\\-]+)\\.\\w{2,6}\\s*$"
     )
 
@@ -73,7 +73,7 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    fun isValidEmail(email: String): Boolean {
+    private fun isValidEmail(email: String): Boolean {
         return emailRegex.matches(email)
     }
 
@@ -85,7 +85,7 @@ class SignUpActivity : AppCompatActivity() {
             if(it.isSuccessful){
                 val user = signUpAuth.currentUser
                 val hashMap = hashMapOf(
-                    "userid" to user!!.uid!!,
+                    "userid" to user!!.uid,
                     "username" to name,
                     "useremail" to email,
                     "status" to "default",
