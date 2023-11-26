@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
     id("androidx.navigation.safeargs")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -64,5 +65,6 @@ dependencies {
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("com.rengwuxian.materialedittext:library:2.1.4")
     implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }
 

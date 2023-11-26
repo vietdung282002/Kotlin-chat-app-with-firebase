@@ -4,11 +4,11 @@ package com.example.chatapp
 
 import android.app.ProgressDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.EditText
-import android.widget.TextView
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.chatapp.databinding.ActivitySignInBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -27,9 +27,9 @@ class SignInActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-//        if(auth.currentUser != null){
-//            startActivity(Intent(this,MainActivity::class.java))
-//        }
+        if(auth.currentUser != null){
+            startActivity(Intent(this,MainActivity::class.java))
+        }
 
         progressDialogSignIn = ProgressDialog(this)
 
@@ -50,17 +50,24 @@ class SignInActivity : AppCompatActivity() {
             }
         }
 
+        onBackPressedDispatcher.addCallback(this,object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                progressDialogSignIn.dismiss()
+                finish()
+            }
+        })
+
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        super.onBackPressed()
-        progressDialogSignIn.dismiss()
-        finish()
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "on signin Pause: ")
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.d(TAG, "on signin Destroy: ")
         progressDialogSignIn.dismiss()
     }
 
@@ -73,6 +80,8 @@ class SignInActivity : AppCompatActivity() {
                 progressDialogSignIn.dismiss()
 
                 startActivity(Intent(this,MainActivity::class.java))
+
+                finish()
             }else{
                 progressDialogSignIn.dismiss()
 
