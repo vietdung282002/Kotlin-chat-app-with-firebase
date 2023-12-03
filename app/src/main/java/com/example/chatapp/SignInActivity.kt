@@ -27,11 +27,14 @@ class SignInActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        if(auth.currentUser != null){
-            startActivity(Intent(this,MainActivity::class.java))
-        }
-
         progressDialogSignIn = ProgressDialog(this)
+
+        if(auth.currentUser != null){
+            progressDialogSignIn.show()
+            progressDialogSignIn.setMessage("Loading")
+            startActivity(Intent(this,MainActivity::class.java))
+            finish()
+        }
 
         signInBinding.signInTextToSignUp.setOnClickListener {
             startActivity(Intent(this,SignUpActivity::class.java))
@@ -60,14 +63,8 @@ class SignInActivity : AppCompatActivity() {
     }
 
 
-    override fun onPause() {
-        super.onPause()
-        Log.d(TAG, "on signin Pause: ")
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "on signin Destroy: ")
         progressDialogSignIn.dismiss()
     }
 

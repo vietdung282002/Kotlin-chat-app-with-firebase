@@ -12,12 +12,12 @@ import com.example.chatapp.R
 import com.example.chatapp.model.Users
 import de.hdodenhof.circleimageview.CircleImageView
 
-class UserAdapter(): RecyclerView.Adapter<UserAdapter.UserHolder>() {
+class UserAdapter: RecyclerView.Adapter<UserAdapter.UserHolder>() {
 
     private var listOfUsers = listOf<Users>()
     private var listener: OnUserClickListener? = null
     class UserHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val proflieName: TextView = itemView.findViewById(R.id.userName)
+        val profileName: TextView = itemView.findViewById(R.id.userName)
         val imageProfile: CircleImageView = itemView.findViewById(R.id.imageViewUser)
         val statusImageView: ImageView = itemView.findViewById(R.id.statusOnline)
     }
@@ -33,7 +33,7 @@ class UserAdapter(): RecyclerView.Adapter<UserAdapter.UserHolder>() {
     override fun onBindViewHolder(holder: UserHolder, position: Int) {
         val user = listOfUsers[position]
         val name = user.username!!.split("\\s".toRegex())[0]
-        holder.proflieName.setText(name)
+        holder.profileName.text = name
 
         if(user.status.equals("Online")){
             holder.statusImageView.setImageResource(R.drawable.onlinestatus)

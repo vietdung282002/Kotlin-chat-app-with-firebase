@@ -1,45 +1,44 @@
-@file:Suppress("DEPRECATION")
 
 package com.example.chatapp.fragment
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.example.chatapp.ChatActivity
+import com.example.chatapp.ChatFromHomeActivity
 import com.example.chatapp.R
-import com.example.chatapp.SignInActivity
 import com.example.chatapp.adapter.OnUserClickListener
+import com.example.chatapp.adapter.RecentChatAdapter
 import com.example.chatapp.adapter.UserAdapter
+import com.example.chatapp.adapter.onRecentChatClicked
 import com.example.chatapp.databinding.FragmentHomeBinding
+import com.example.chatapp.model.RecentChats
 import com.example.chatapp.model.Users
 import com.example.chatapp.mvvm.ChatAppViewModel
 import com.google.firebase.auth.FirebaseAuth
-import de.hdodenhof.circleimageview.CircleImageView
 
-class HomeFragment : Fragment(), OnUserClickListener {
+class HomeFragment : Fragment(), OnUserClickListener, onRecentChatClicked {
 
     private lateinit var rvUsers: RecyclerView
-    private lateinit var userAdaper: UserAdapter
+    private lateinit var userAdapter: UserAdapter
+    private lateinit var recentChatAdapter: RecentChatAdapter
     private lateinit var userViewModel: ChatAppViewModel
     private lateinit var homeBinding: FragmentHomeBinding
     private lateinit var fbauth: FirebaseAuth
-    private lateinit var toolbar: Toolbar
-    private lateinit var circleImageView: CircleImageView
+//    private lateinit var toolbar: Toolbar
+//    private lateinit var circleImageView: CircleImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         homeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
@@ -49,39 +48,70 @@ class HomeFragment : Fragment(), OnUserClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userViewModel = ViewModelProvider(this).get(ChatAppViewModel::class.java)
+        userViewModel = ViewModelProvider(this)[ChatAppViewModel::class.java]
 
         fbauth = FirebaseAuth.getInstance()
 
-        toolbar = view.findViewById(R.id.toolbarMain)
-        circleImageView = toolbar.findViewById(R.id.tlImage)
+//        toolbar = view.findViewById(R.id.toolbarMain)
+//        circleImageView = toolbar.findViewById(R.id.tlImage)
 
         homeBinding.lifecycleOwner = viewLifecycleOwner
 
-        userAdaper = UserAdapter()
+        userAdapter = UserAdapter()
         rvUsers = view.findViewById(R.id.rvUsers)
         val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
         rvUsers.layoutManager = layoutManager
 
-        userViewModel.getUsers().observe(viewLifecycleOwner, Observer {
-            userAdaper.setUserList(it)
-            userAdaper.setOnUserClickListener(this)
-            rvUsers.adapter = userAdaper
-        })
+        userViewModel.getUsers().observe(viewLifecycleOwner) {
+            it?.let {
+                userAdapter.setUserList(it)
+                rvUsers.adapter = userAdapter
+            }
+        }
+        userAdapter.setOnUserClickListener(this)
 
-        homeBinding.logOut.setOnClickListener {
-            fbauth.signOut()
-            startActivity(Intent(requireContext(),SignInActivity::class.java))
-            activity?.finish()
+        
+//        userViewModel.imageUrl.observe(viewLifecycleOwner){
+//            it?.let{
+//                Glide.with(requireContext()).load(it).into(circleImageView)
+//            }
+//        }
+
+        recentChatAdapter = RecentChatAdapter()
+
+        userViewModel.getRecentChats().observe(viewLifecycleOwner){
+            homeBinding.rvRecentChats.layoutManager = LinearLayoutManager(activity)
+            recentChatAdapter.setOnRecentList(it)
+            homeBinding.rvRecentChats.adapter = recentChatAdapter
         }
 
-        userViewModel.imageUrl.observe(viewLifecycleOwner, Observer {
-            Glide.with(requireContext()).load(it).into(circleImageView)
-        })
+        recentChatAdapter.setOnRecentChatListener(this)
+
+
     }
 
+
     override fun onUserSelected(position: Int, users: Users) {
-        TODO("Not yet implemented")
+
+//        val action = HomeFragmentDirections.actionHomeFragmentToChatFragment(users)
+//        view?.findNavController()?.navigate(action)
+//        Toast.makeText(requireContext(), "ClickOn${users.username}", Toast.LENGTH_LONG).show()
+        val intent = Intent(requireActivity(),ChatActivity::class.java)
+        val bundle = Bundle()
+        val parcel = users
+        bundle.putParcelable("users",parcel)
+        intent.putExtra("bundle",bundle)
+        startActivity(intent)
+    }
+
+    override fun getOnRecentChatClicked(position: Int, chat: RecentChats) {
+//        val action = HomeFragmentDirections.actionHomeFragmentToChatFromHomeFragment(recentChatList)
+//        view?.findNavController()?.navigate(action)
+        val intent = Intent(requireActivity(),ChatFromHomeActivity::class.java)
+        val bundle = Bundle()
+        bundle.putParcelable("chat", chat)
+        intent.putExtra("bundle",bundle)
+        startActivity(intent)
     }
 }
