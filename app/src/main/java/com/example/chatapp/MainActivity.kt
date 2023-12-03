@@ -1,9 +1,7 @@
 package com.example.chatapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 
@@ -17,24 +15,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        onBackPressedDispatcher.addCallback(this,object :OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
-                Log.d(TAG, supportFragmentManager.backStackEntryCount.toString())
-                if(supportFragmentManager.backStackEntryCount > 0){
-                    finish()
-                }else {
-                    if (navController.currentDestination?.id == R.id.homeFragment) {
-                        moveTaskToBack(true)
-                    } else {
-                        finish()
-                    }
-                }
-            }
-        })
-
-        val navHostFrag = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFrag =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFrag.navController
     }
 
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            super.onBackPressed()
+        } else {
+            // If we are on the Home fragment, exit the app
+            if (navController.currentDestination?.id == R.id.homeFragment) {
+                moveTaskToBack(true)
+            } else {
+                super.onBackPressed()
+            }
+        }
+    }
 
 }

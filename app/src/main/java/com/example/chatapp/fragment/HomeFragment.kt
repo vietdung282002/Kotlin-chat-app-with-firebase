@@ -1,18 +1,17 @@
-@file:Suppress("DEPRECATION")
 
 package com.example.chatapp.fragment
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -39,7 +38,7 @@ class HomeFragment : Fragment(), OnUserClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         homeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
@@ -49,7 +48,7 @@ class HomeFragment : Fragment(), OnUserClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userViewModel = ViewModelProvider(this).get(ChatAppViewModel::class.java)
+        userViewModel = ViewModelProvider(this)[ChatAppViewModel::class.java]
 
         fbauth = FirebaseAuth.getInstance()
 
@@ -64,11 +63,13 @@ class HomeFragment : Fragment(), OnUserClickListener {
 
         rvUsers.layoutManager = layoutManager
 
-        userViewModel.getUsers().observe(viewLifecycleOwner, Observer {
-            userAdaper.setUserList(it)
-            userAdaper.setOnUserClickListener(this)
-            rvUsers.adapter = userAdaper
-        })
+        userViewModel.getUsers().observe(viewLifecycleOwner) {
+            it?.let {
+                userAdaper.setUserList(it)
+                rvUsers.adapter = userAdaper
+            }
+        }
+        userAdaper.setOnUserClickListener(this)
 
         homeBinding.logOut.setOnClickListener {
             fbauth.signOut()
@@ -76,12 +77,17 @@ class HomeFragment : Fragment(), OnUserClickListener {
             activity?.finish()
         }
 
-        userViewModel.imageUrl.observe(viewLifecycleOwner, Observer {
-            Glide.with(requireContext()).load(it).into(circleImageView)
-        })
+        userViewModel.imageUrl.observe(viewLifecycleOwner){
+            it?.let{
+                Glide.with(requireContext()).load(it).into(circleImageView)
+            }
+        }
+
     }
 
     override fun onUserSelected(position: Int, users: Users) {
-        TODO("Not yet implemented")
+        val action = HomeFragmentDirections.actionHomeFragmentToChatFragment(users)
+        view?.findNavController()?.navigate(action)
+//        Toast.makeText(requireContext(), "ClickOn${users.username}", Toast.LENGTH_LONG).show()
     }
 }

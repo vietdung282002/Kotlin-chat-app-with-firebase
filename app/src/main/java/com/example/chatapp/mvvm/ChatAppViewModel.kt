@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.chatapp.MyApplication
 import com.example.chatapp.SharedPrefs
 import com.example.chatapp.Utils
+import com.example.chatapp.model.Messages
 import com.example.chatapp.model.Users
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +19,8 @@ class ChatAppViewModel: ViewModel() {
     val message = MutableLiveData<String>()
     private val firestore = FirebaseFirestore.getInstance()
 
-    val usersRepo = UsersRepo()
+    private val usersRepo = UsersRepo()
+    private val messageRepo = MessageRepo()
 
     init {
         getCurrentUser()
@@ -28,10 +30,12 @@ class ChatAppViewModel: ViewModel() {
         return usersRepo.getUsers()
     }
 
-    fun getCurrentUser() = viewModelScope.launch(Dispatchers.IO){
+
+    //Get current user information
+    private fun getCurrentUser() = viewModelScope.launch(Dispatchers.IO){
         val context = MyApplication.instance.applicationContext
 
-        firestore.collection("Users").document(Utils.getUiLoggedIn()).addSnapshotListener { value, error ->
+        firestore.collection("Users").document(Utils.getUiLoggedIn()).addSnapshotListener { value, _ ->
             if(value!!.exists()){
                 val users = value.toObject(Users::class.java)
                 name.value = users?.username!!
@@ -44,4 +48,54 @@ class ChatAppViewModel: ViewModel() {
         }
     }
 
+
+    //Send message
+
+    fun sendMessage(sender: String, receiver: String, friendName: String, friendImage: String) = viewModelScope.launch(Dispatchers.IO) {
+        val context = MyApplication.instance.applicationContext
+
+        val hashMap = hashMapOf<String,Any>(
+            "sender" to sender,
+            "receiver" to receiver,
+            "message" to message.value!!,
+            "time" to Utils.getTime()
+        )
+
+        val uniqueId = listOf(sender,receiver).sorted()
+        uniqueId.joinToString(separator = "")
+
+        val friendNameSplit = friendName.split("\\s".toRegex())[0]
+        val mySharedPrefs = SharedPrefs(context)
+        mySharedPrefs.setValue("friendId",receiver)
+        mySharedPrefs.setValue("chatroomId",uniqueId.toString())
+        mySharedPrefs.setValue("friendname", friendNameSplit)
+        mySharedPrefs.setValue("friendImage", friendImage)
+
+        firestore.collection("Messages").document(uniqueId.toString()).collection("chats")
+            .document(Utils.getTime()).set(hashMap).addOnCompleteListener {
+
+                val hashMapForRecent = hashMapOf<String, Any>(
+                    "friendId" to receiver,
+                    "time" to Utils.getTime(),
+                    "sender" to Utils.getUiLoggedIn(),
+                    "message" to message.value!!,
+                    "friendsImage" to friendImage,
+                    "name" to friendName,
+
+                )
+
+                firestore.collection("Conversation${Utils.getUiLoggedIn()}").document(receiver).set(hashMapForRecent)
+
+                firestore.collection("Conversation${receiver}").document(Utils.getUiLoggedIn()).update("message",message.value!!,"time",Utils.getTime(),"person", name.value!!)
+
+                if(it.isSuccessful){
+                    message.value = ""
+                }
+        }
+
+    }
+
+    fun getMessage(friendid: String): LiveData<List<Messages>>{
+        return messageRepo.getMessage(friendid)
+    }
 }
