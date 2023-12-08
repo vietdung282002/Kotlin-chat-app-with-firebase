@@ -29,7 +29,11 @@ class RecentChatAdapter: RecyclerView.Adapter<RecentChatHolder>() {
         recentModel = recentChatList
         holder.userName.text = recentModel.name
 
-        val message = recentChatList.message!!.split("").joinToString("")
+        var message = recentChatList.message!!.split("").joinToString("")
+        if(message.length > 9){
+
+            message = message.substring(0, 9).plus("....")
+        }
 
         val makeLastMessage = "${recentChatList.person}: $message"
 

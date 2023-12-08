@@ -54,17 +54,18 @@ class ChatActivity : AppCompatActivity() {
 
 
         viewModel.getMessage(users?.userid!!).observe(this){
-            initRecycleView(it)
+            initRecycleView(it,users.username,users.imageUrl)
         }
 
 
     }
-    private fun initRecycleView(it: List<Messages>) {
+    private fun initRecycleView(it: List<Messages>,userName:String?,imageUrl: String?) {
         messageAdapter = MessageAdapter()
         val layoutManager = LinearLayoutManager(applicationContext)
         chatBinding.messagesRecyclerView.layoutManager = layoutManager
         layoutManager.stackFromEnd = true
         messageAdapter.setMessageList(it)
+        messageAdapter.setUser(userName!!,imageUrl!!)
         messageAdapter.notifyDataSetChanged()
         chatBinding.messagesRecyclerView.adapter = messageAdapter
     }

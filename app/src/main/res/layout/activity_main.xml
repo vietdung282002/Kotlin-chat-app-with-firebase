@@ -33,13 +33,13 @@
             app:civ_border_color="#FE2C54"
             android:id="@+id/tlImage"/>
 
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:id="@+id/logOut"
-            android:layout_gravity="start"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/logout"/>
+<!--        <ImageView-->
+<!--            android:layout_width="35dp"-->
+<!--            android:layout_height="35dp"-->
+<!--            android:id="@+id/logOut"-->
+<!--            android:layout_gravity="start"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:src="@drawable/logout"/>-->
 
 
 

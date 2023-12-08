@@ -5,8 +5,11 @@
         android:title="Home"
         android:icon="@drawable/baseline_message_24"/>
     <item
+        android:id="@+id/friendFragment"
+        android:title="Friend"
+        android:icon="@drawable/baseline_people_alt_24"/>
+    <item
         android:id="@+id/settingFragment"
-        android:title="setting"
+        android:title="Setting"
         android:icon="@drawable/baseline_settings_suggest_24"/>
-
 </menu>

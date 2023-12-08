@@ -32,24 +32,4 @@ class UsersRepo {
         return users
     }
 
-//    fun getUser(userId: String): LiveData<Users> {
-//        val user = MutableLiveData<Users>()
-//        firestore.collection("Users").addSnapshotListener { snapshot, exception ->
-//            if (exception != null) {
-//                return@addSnapshotListener
-//            }
-//
-//            var User = Users()
-//            snapshot?.documents?.forEach { document ->
-//                val inf = document.toObject(Users::class.java)
-//                if (inf!!.userid == userId) {
-//                    inf.let {
-//                        User = inf
-//                    }
-//                }
-//                user.value = User
-//            }
-//        }
-//        return user
-//    }
 }

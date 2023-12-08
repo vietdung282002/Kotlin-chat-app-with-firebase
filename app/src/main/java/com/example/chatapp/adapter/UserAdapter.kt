@@ -32,7 +32,7 @@ class UserAdapter: RecyclerView.Adapter<UserAdapter.UserHolder>() {
 
     override fun onBindViewHolder(holder: UserHolder, position: Int) {
         val user = listOfUsers[position]
-        val name = user.username!!.split("\\s".toRegex())[0]
+        val name = user.username
         holder.profileName.text = name
 
         if(user.status.equals("Online")){

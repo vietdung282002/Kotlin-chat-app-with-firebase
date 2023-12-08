@@ -24,16 +24,13 @@ import com.example.chatapp.model.Users
 import com.example.chatapp.mvvm.ChatAppViewModel
 import com.google.firebase.auth.FirebaseAuth
 
-class HomeFragment : Fragment(), OnUserClickListener, OnRecentChatClicked {
+class HomeFragment : Fragment(), OnRecentChatClicked {
 
-    private lateinit var rvUsers: RecyclerView
-    private lateinit var userAdapter: UserAdapter
     private lateinit var recentChatAdapter: RecentChatAdapter
     private lateinit var userViewModel: ChatAppViewModel
     private lateinit var homeBinding: FragmentHomeBinding
     private lateinit var fbauth: FirebaseAuth
-//    private lateinit var toolbar: Toolbar
-//    private lateinit var circleImageView: CircleImageView
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,31 +49,7 @@ class HomeFragment : Fragment(), OnUserClickListener, OnRecentChatClicked {
 
         fbauth = FirebaseAuth.getInstance()
 
-//        toolbar = view.findViewById(R.id.toolbarMain)
-//        circleImageView = toolbar.findViewById(R.id.tlImage)
-
         homeBinding.lifecycleOwner = viewLifecycleOwner
-
-        userAdapter = UserAdapter()
-        rvUsers = view.findViewById(R.id.rvUsers)
-        val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-
-        rvUsers.layoutManager = layoutManager
-
-        userViewModel.getUsers().observe(viewLifecycleOwner) {
-            it?.let {
-                userAdapter.setUserList(it)
-                rvUsers.adapter = userAdapter
-            }
-        }
-        userAdapter.setOnUserClickListener(this)
-
-        
-//        userViewModel.imageUrl.observe(viewLifecycleOwner){
-//            it?.let{
-//                Glide.with(requireContext()).load(it).into(circleImageView)
-//            }
-//        }
 
         recentChatAdapter = RecentChatAdapter()
 
@@ -88,26 +61,10 @@ class HomeFragment : Fragment(), OnUserClickListener, OnRecentChatClicked {
 
         recentChatAdapter.setOnRecentChatListener(this)
 
-
     }
 
-
-    override fun onUserSelected(position: Int, users: Users) {
-
-//        val action = HomeFragmentDirections.actionHomeFragmentToChatFragment(users)
-//        view?.findNavController()?.navigate(action)
-//        Toast.makeText(requireContext(), "ClickOn${users.username}", Toast.LENGTH_LONG).show()
-        val intent = Intent(requireActivity(), ChatActivity::class.java)
-        val bundle = Bundle()
-        val parcel = users
-        bundle.putParcelable("users",parcel)
-        intent.putExtra("bundle",bundle)
-        startActivity(intent)
-    }
 
     override fun getOnRecentChatClicked(position: Int, chat: RecentChats) {
-//        val action = HomeFragmentDirections.actionHomeFragmentToChatFromHomeFragment(recentChatList)
-//        view?.findNavController()?.navigate(action)
         val intent = Intent(requireActivity(), ChatFromHomeActivity::class.java)
         val bundle = Bundle()
         bundle.putParcelable("chat", chat)

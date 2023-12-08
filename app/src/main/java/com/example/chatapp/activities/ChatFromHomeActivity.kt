@@ -10,6 +10,7 @@ import com.example.chatapp.adapter.MessageAdapter
 import com.example.chatapp.databinding.ActivityChatFromHomeBinding
 import com.example.chatapp.model.Messages
 import com.example.chatapp.model.RecentChats
+import com.example.chatapp.model.Users
 import com.example.chatapp.mvvm.ChatAppViewModel
 
 class ChatFromHomeActivity : AppCompatActivity() {
@@ -49,19 +50,18 @@ class ChatFromHomeActivity : AppCompatActivity() {
             }
         }
 
-
         viewModel.getMessage(chat?.friendId!!).observe(this){
-            initRecycleView(it)
+            initRecycleView(it,chat?.name,chat?.friendsImage)
         }
 
-
     }
-    private fun initRecycleView(it: List<Messages>) {
+    private fun initRecycleView(it: List<Messages>,userName:String?,imageUrl: String?) {
         messageAdapter = MessageAdapter()
         val layoutManager = LinearLayoutManager(applicationContext)
         chatBinding.messagesRecyclerView.layoutManager = layoutManager
         layoutManager.stackFromEnd = true
         messageAdapter.setMessageList(it)
+        messageAdapter.setUser(userName!!,imageUrl!!)
         messageAdapter.notifyDataSetChanged()
         chatBinding.messagesRecyclerView.adapter = messageAdapter
     }

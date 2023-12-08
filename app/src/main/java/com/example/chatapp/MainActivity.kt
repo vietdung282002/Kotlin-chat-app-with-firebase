@@ -36,10 +36,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.logOut.setOnClickListener {
-            fbauth.signOut()
-            startActivity(Intent(this, SignInActivity::class.java))
-        }
+//        binding.logOut.setOnClickListener {
+//            fbauth.signOut()
+//            startActivity(Intent(this, SignInActivity::class.java))
+//        }
 
 
         val navHostFrag =

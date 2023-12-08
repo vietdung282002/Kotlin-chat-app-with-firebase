@@ -86,10 +86,7 @@
             android:layout_height="match_parent"
             android:layout_above="@id/layoutChatbox"
             android:layout_below="@id/toolBarChat"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp" />
+        />
 
 
         <LinearLayout
@@ -116,6 +113,7 @@
                 android:importantForAutofill="no"
                 android:inputType="textMultiLine"
                 android:maxLines="6"
+                android:minHeight="48dp"
                 android:text="@={viewModel.message}" />
 
             <Button
