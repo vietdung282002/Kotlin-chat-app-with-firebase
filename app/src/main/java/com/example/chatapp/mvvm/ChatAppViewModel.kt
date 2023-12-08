@@ -11,7 +11,7 @@ import com.example.chatapp.model.Messages
 import com.example.chatapp.model.RecentChats
 import com.example.chatapp.model.Users
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.CoroutineExceptionHandler
+//import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -24,10 +24,10 @@ class ChatAppViewModel : ViewModel() {
     private val usersRepo = UsersRepo()
     private val messageRepo = MessageRepo()
     private val chatListRepo = ChatListRepo()
-
-    val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        throwable.printStackTrace()
-    }
+//
+//    val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+//        throwable.printStackTrace()
+//    }
     init {
         getCurrentUser()
     }
@@ -35,10 +35,6 @@ class ChatAppViewModel : ViewModel() {
     fun getUsers(): LiveData<List<Users>> {
         return usersRepo.getUsers()
     }
-
-//    fun getUser(userId: String): LiveData<Users>{
-//        return usersRepo.getUser(userId)
-//    }
 
 
     //Get current user information

@@ -1,15 +1,16 @@
 @file:Suppress("DEPRECATION")
 
-package com.example.chatapp
+package com.example.chatapp.activities
 
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.example.chatapp.MainActivity
+import com.example.chatapp.R
 import com.example.chatapp.databinding.ActivitySignInBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -23,7 +24,7 @@ class SignInActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        signInBinding = DataBindingUtil.setContentView(this,R.layout.activity_sign_in)
+        signInBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in)
 
         auth = FirebaseAuth.getInstance()
 
@@ -32,12 +33,12 @@ class SignInActivity : AppCompatActivity() {
         if(auth.currentUser != null){
             progressDialogSignIn.show()
             progressDialogSignIn.setMessage("Loading")
-            startActivity(Intent(this,MainActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
 
         signInBinding.signInTextToSignUp.setOnClickListener {
-            startActivity(Intent(this,SignUpActivity::class.java))
+            startActivity(Intent(this, SignUpActivity::class.java))
         }
 
         signInBinding.loginButton.setOnClickListener {
@@ -76,7 +77,7 @@ class SignInActivity : AppCompatActivity() {
             if(it.isSuccessful){
                 progressDialogSignIn.dismiss()
 
-                startActivity(Intent(this,MainActivity::class.java))
+                startActivity(Intent(this, MainActivity::class.java))
 
                 finish()
             }else{

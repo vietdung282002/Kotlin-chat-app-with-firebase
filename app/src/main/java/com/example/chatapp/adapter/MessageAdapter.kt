@@ -13,13 +13,13 @@ import com.example.chatapp.model.Messages
 class MessageAdapter : RecyclerView.Adapter<MessageHolder>() {
 
     private var listOfMessage = listOf<Messages>()
-    private val LEFT = 0
-    private val RIGHT = 1
+    private val left = 0
+    private val right = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageHolder {
         val inflater = LayoutInflater.from(parent.context)
 
-        return if (viewType == RIGHT) {
+        return if (viewType == right) {
             val view = inflater.inflate(R.layout.chatitemright, parent, false)
             MessageHolder(view)
         } else {
@@ -43,7 +43,7 @@ class MessageAdapter : RecyclerView.Adapter<MessageHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int =
-        if (listOfMessage[position].sender == Utils.getUiLoggedIn()) RIGHT else LEFT
+        if (listOfMessage[position].sender == Utils.getUiLoggedIn()) right else left
 
     fun setMessageList(newList: List<Messages>){
         this.listOfMessage = newList

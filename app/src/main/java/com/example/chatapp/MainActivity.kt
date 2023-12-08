@@ -2,21 +2,14 @@ package com.example.chatapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
+import com.example.chatapp.activities.SignInActivity
 import com.example.chatapp.databinding.ActivityMainBinding
-import com.example.chatapp.fragment.HomeFragment
-import com.example.chatapp.fragment.SettingFragment
 import com.example.chatapp.mvvm.ChatAppViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -45,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.logOut.setOnClickListener {
             fbauth.signOut()
-            startActivity(Intent(this,SignInActivity::class.java))
+            startActivity(Intent(this, SignInActivity::class.java))
         }
 
 
@@ -71,13 +64,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun hideView(){
-        binding.bottomNavigationView.visibility = View.GONE
-        binding.toolbarMain.visibility = View.GONE
-    }
-
-    fun showView(){
-        binding.bottomNavigationView.visibility = View.VISIBLE
-        binding.toolbarMain.visibility = View.VISIBLE
-    }
 }

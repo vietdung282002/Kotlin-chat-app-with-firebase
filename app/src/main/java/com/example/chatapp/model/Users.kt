@@ -9,7 +9,7 @@ data class Users (
     val status: String? = "",
     val imageUrl: String? = "",
     val username: String? = "",
-    val useremail: String? = ""
+    val userEmail: String? = ""
 ): Parcelable{
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -17,15 +17,14 @@ data class Users (
         parcel.readString(),
         parcel.readString(),
         parcel.readString()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(userid)
         parcel.writeString(status)
         parcel.writeString(imageUrl)
         parcel.writeString(username)
-        parcel.writeString(useremail)
+        parcel.writeString(userEmail)
     }
 
     override fun describeContents(): Int {

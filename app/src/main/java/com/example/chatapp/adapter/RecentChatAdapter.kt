@@ -12,8 +12,8 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 class RecentChatAdapter: RecyclerView.Adapter<RecentChatHolder>() {
     private var listOfChats = listOf<RecentChats>()
-    private var listener: onRecentChatClicked? = null
-    private var recentModal = RecentChats()
+    private var listener: OnRecentChatClicked? = null
+    private var recentModel = RecentChats()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecentChatHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.recentchatlist,parent,false)
         return RecentChatHolder(view)
@@ -26,12 +26,12 @@ class RecentChatAdapter: RecyclerView.Adapter<RecentChatHolder>() {
     override fun onBindViewHolder(holder: RecentChatHolder, position: Int) {
 
         val recentChatList = listOfChats[position]
-        recentModal = recentChatList
-        holder.userName.text = recentModal.name
+        recentModel = recentChatList
+        holder.userName.text = recentModel.name
 
-        val themessage = recentChatList.message!!.split("").joinToString("")
+        val message = recentChatList.message!!.split("").joinToString("")
 
-        val makeLastMessage = "${recentChatList.person}: ${themessage}"
+        val makeLastMessage = "${recentChatList.person}: $message"
 
         holder.lastMessage.text = makeLastMessage
 
@@ -44,7 +44,7 @@ class RecentChatAdapter: RecyclerView.Adapter<RecentChatHolder>() {
         }
     }
 
-    fun setOnRecentChatListener(listener: onRecentChatClicked){
+    fun setOnRecentChatListener(listener: OnRecentChatClicked){
         this.listener = listener
     }
 
@@ -53,7 +53,7 @@ class RecentChatAdapter: RecyclerView.Adapter<RecentChatHolder>() {
     }
 }
 
-interface onRecentChatClicked {
+interface OnRecentChatClicked {
     fun getOnRecentChatClicked(position: Int, recentChatList: RecentChats)
 }
 

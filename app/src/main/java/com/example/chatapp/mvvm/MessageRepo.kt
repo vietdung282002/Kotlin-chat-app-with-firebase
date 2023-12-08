@@ -31,10 +31,10 @@ class MessageRepo {
                         val messageModal = it.toObject(Messages::class.java)
 
                         if(messageModal!!.sender.equals(Utils.getUiLoggedIn()) && messageModal.receiver.equals(friendid) ||
-                            messageModal!!.sender.equals(friendid) && messageModal.receiver.equals(Utils.getUiLoggedIn())){
+                            messageModal.sender.equals(friendid) && messageModal.receiver.equals(Utils.getUiLoggedIn())){
 
-                            messageModal.let {
-                                messageList.add(it!!)
+                            messageModal.let { messages1 ->
+                                messageList.add(messages1)
                             }
                         }
                     }

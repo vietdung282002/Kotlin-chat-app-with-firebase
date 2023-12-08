@@ -20,16 +20,16 @@
         android:theme="@style/Theme.ChatApp"
         tools:targetApi="31">
         <activity
-            android:name=".ChatFromHomeActivity"
+            android:name=".activities.ChatFromHomeActivity"
             android:exported="false" />
         <activity
-            android:name=".ChatActivity"
+            android:name=".activities.ChatActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".activities.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".SignInActivity"
+            android:name=".activities.SignInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

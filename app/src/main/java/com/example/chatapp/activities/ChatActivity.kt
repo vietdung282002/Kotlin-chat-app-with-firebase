@@ -1,19 +1,16 @@
-package com.example.chatapp
+package com.example.chatapp.activities
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.chatapp.Utils
 import com.example.chatapp.adapter.MessageAdapter
 import com.example.chatapp.databinding.ActivityChatBinding
 import com.example.chatapp.model.Messages
 import com.example.chatapp.model.Users
 import com.example.chatapp.mvvm.ChatAppViewModel
-import com.google.firebase.auth.FirebaseAuth
 
 
 @Suppress("DEPRECATION")
@@ -49,8 +46,8 @@ class ChatActivity : AppCompatActivity() {
                 viewModel.sendMessage(
                     Utils.getUiLoggedIn(),
                     users?.userid!!,
-                    users?.username!!,
-                    users?.imageUrl!!
+                    users.username!!,
+                    users.imageUrl!!
                 )
             }
         }

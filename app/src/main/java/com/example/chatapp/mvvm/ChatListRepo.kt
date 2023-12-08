@@ -2,7 +2,6 @@ package com.example.chatapp.mvvm
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.bumptech.glide.util.Util
 import com.example.chatapp.Utils
 import com.example.chatapp.model.RecentChats
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,8 +24,8 @@ class ChatListRepo {
                     val recentModal = it.toObject(RecentChats::class.java)
 
                     if(recentModal.sender.equals(Utils.getUiLoggedIn())){
-                        recentModal.let {
-                            chatList.add(it)
+                        recentModal.let {recent ->
+                            chatList.add(recent)
                         }
                     }
                 }

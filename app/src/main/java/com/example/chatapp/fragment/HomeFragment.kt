@@ -11,20 +11,20 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.chatapp.ChatActivity
-import com.example.chatapp.ChatFromHomeActivity
+import com.example.chatapp.activities.ChatActivity
+import com.example.chatapp.activities.ChatFromHomeActivity
 import com.example.chatapp.R
 import com.example.chatapp.adapter.OnUserClickListener
 import com.example.chatapp.adapter.RecentChatAdapter
 import com.example.chatapp.adapter.UserAdapter
-import com.example.chatapp.adapter.onRecentChatClicked
+import com.example.chatapp.adapter.OnRecentChatClicked
 import com.example.chatapp.databinding.FragmentHomeBinding
 import com.example.chatapp.model.RecentChats
 import com.example.chatapp.model.Users
 import com.example.chatapp.mvvm.ChatAppViewModel
 import com.google.firebase.auth.FirebaseAuth
 
-class HomeFragment : Fragment(), OnUserClickListener, onRecentChatClicked {
+class HomeFragment : Fragment(), OnUserClickListener, OnRecentChatClicked {
 
     private lateinit var rvUsers: RecyclerView
     private lateinit var userAdapter: UserAdapter
@@ -97,7 +97,7 @@ class HomeFragment : Fragment(), OnUserClickListener, onRecentChatClicked {
 //        val action = HomeFragmentDirections.actionHomeFragmentToChatFragment(users)
 //        view?.findNavController()?.navigate(action)
 //        Toast.makeText(requireContext(), "ClickOn${users.username}", Toast.LENGTH_LONG).show()
-        val intent = Intent(requireActivity(),ChatActivity::class.java)
+        val intent = Intent(requireActivity(), ChatActivity::class.java)
         val bundle = Bundle()
         val parcel = users
         bundle.putParcelable("users",parcel)
@@ -108,7 +108,7 @@ class HomeFragment : Fragment(), OnUserClickListener, onRecentChatClicked {
     override fun getOnRecentChatClicked(position: Int, chat: RecentChats) {
 //        val action = HomeFragmentDirections.actionHomeFragmentToChatFromHomeFragment(recentChatList)
 //        view?.findNavController()?.navigate(action)
-        val intent = Intent(requireActivity(),ChatFromHomeActivity::class.java)
+        val intent = Intent(requireActivity(), ChatFromHomeActivity::class.java)
         val bundle = Bundle()
         bundle.putParcelable("chat", chat)
         intent.putExtra("bundle",bundle)

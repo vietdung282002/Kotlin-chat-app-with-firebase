@@ -1,12 +1,13 @@
 @file:Suppress("DEPRECATION")
 
-package com.example.chatapp
+package com.example.chatapp.activities
 
 import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import com.example.chatapp.R
 import com.example.chatapp.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -27,14 +28,14 @@ class SignUpActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        signUpBinding = DataBindingUtil.setContentView(this,R.layout.activity_sign_up)
+        signUpBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up)
 
         firestore = FirebaseFirestore.getInstance()
         signUpAuth = FirebaseAuth.getInstance()
         signUpPd = ProgressDialog((this))
 
         signUpBinding.signUpTextToSignIn.setOnClickListener{
-            startActivity(Intent(this,SignInActivity::class.java))
+            startActivity(Intent(this, SignInActivity::class.java))
         }
 
         signUpBinding.signUpBtn.setOnClickListener {
@@ -93,7 +94,7 @@ class SignUpActivity : AppCompatActivity() {
 
                 firestore.collection("Users").document(user.uid).set(hashMap)
                 signUpPd.dismiss()
-                startActivity(Intent(this,SignInActivity::class.java))
+                startActivity(Intent(this, SignInActivity::class.java))
 
             }
         }

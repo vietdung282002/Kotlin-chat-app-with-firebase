@@ -1,16 +1,15 @@
-package com.example.chatapp
+package com.example.chatapp.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.chatapp.Utils
 import com.example.chatapp.adapter.MessageAdapter
-import com.example.chatapp.databinding.ActivityChatBinding
 import com.example.chatapp.databinding.ActivityChatFromHomeBinding
 import com.example.chatapp.model.Messages
 import com.example.chatapp.model.RecentChats
-import com.example.chatapp.model.Users
 import com.example.chatapp.mvvm.ChatAppViewModel
 
 class ChatFromHomeActivity : AppCompatActivity() {
