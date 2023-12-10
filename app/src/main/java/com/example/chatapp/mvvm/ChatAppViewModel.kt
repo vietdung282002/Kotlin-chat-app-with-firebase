@@ -24,10 +24,7 @@ class ChatAppViewModel : ViewModel() {
     private val usersRepo = UsersRepo()
     private val messageRepo = MessageRepo()
     private val chatListRepo = ChatListRepo()
-//
-//    val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-//        throwable.printStackTrace()
-//    }
+
     init {
         getCurrentUser()
     }

@@ -6,7 +6,7 @@
         android:icon="@drawable/baseline_message_24"/>
     <item
         android:id="@+id/friendFragment"
-        android:title="Friend"
+        android:title="User"
         android:icon="@drawable/baseline_people_alt_24"/>
     <item
         android:id="@+id/settingFragment"
