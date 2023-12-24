@@ -1,6 +1,5 @@
 package com.example.chatapp.notifications.network
 
-import android.app.Notification
 import com.example.chatapp.notifications.Constants.Companion.CONTENT_TYPE
 import com.example.chatapp.notifications.Constants.Companion.SERVER_KEY
 import com.example.chatapp.notifications.entity.PushNotification

@@ -14,7 +14,6 @@ import android.text.Html
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import androidx.core.app.RemoteInput
 import com.example.chatapp.MainActivity
 import com.example.chatapp.R
 import com.example.chatapp.SharedPrefs

@@ -1,10 +1,7 @@
-
 package com.example.chatapp.fragment
 
-import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +9,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.chatapp.MyApplication
-import com.example.chatapp.activities.ChatActivity
 import com.example.chatapp.R
-import com.example.chatapp.SharedPrefs
-import com.example.chatapp.adapter.RecentChatAdapter
+import com.example.chatapp.activities.ChatActivity
 import com.example.chatapp.adapter.OnRecentChatClicked
+import com.example.chatapp.adapter.RecentChatAdapter
 import com.example.chatapp.databinding.FragmentHomeBinding
 import com.example.chatapp.model.RecentChats
 import com.example.chatapp.mvvm.ChatAppViewModel
@@ -52,7 +47,7 @@ class HomeFragment : Fragment(), OnRecentChatClicked {
 
         recentChatAdapter = RecentChatAdapter()
 
-        homeViewModel.getRecentChats().observe(viewLifecycleOwner){
+        homeViewModel.getRecentChats().observe(viewLifecycleOwner) {
             homeBinding.rvRecentChats.layoutManager = LinearLayoutManager(activity)
             recentChatAdapter.setOnRecentList(it)
             homeBinding.rvRecentChats.adapter = recentChatAdapter
