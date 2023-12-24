@@ -11,36 +11,36 @@ class MessageRepo {
 
     private val firestore = FirebaseFirestore.getInstance()
 
-    fun getMessage(friendid: String): LiveData<List<Messages>> {
+        fun getMessage(friendId: String): LiveData<List<Messages>> {
 
-        val messages = MutableLiveData<List<Messages>>()
+            val messages = MutableLiveData<List<Messages>>()
 
-        val uniqueid = listOf(Utils.getUiLoggedIn(), friendid).sorted()
-        uniqueid.joinToString("")
+            val uniqueId = listOf(Utils.getUidLoggedIn(), friendId).sorted()
+            uniqueId.joinToString("")
 
-        firestore.collection("Messages").document(uniqueid.toString()).collection("chats")
-            .orderBy("time", Query.Direction.ASCENDING).addSnapshotListener { value, error ->
-                if(error != null){
-                    return@addSnapshotListener
-                }
+            firestore.collection("Messages").document(uniqueId.toString()).collection("chats")
+                .orderBy("time", Query.Direction.ASCENDING).addSnapshotListener { value, error ->
+                    if(error != null){
+                        return@addSnapshotListener
+                    }
 
-                val messageList = mutableListOf<Messages>()
+                    val messageList = mutableListOf<Messages>()
 
-                if(!value!!.isEmpty){
-                    value.documents.forEach{
-                        val messageModal = it.toObject(Messages::class.java)
+                    if(!value!!.isEmpty){
+                        value.documents.forEach{
+                            val messageModal = it.toObject(Messages::class.java)
 
-                        if(messageModal!!.sender.equals(Utils.getUiLoggedIn()) && messageModal.receiver.equals(friendid) ||
-                            messageModal.sender.equals(friendid) && messageModal.receiver.equals(Utils.getUiLoggedIn())){
+                            if(messageModal!!.sender.equals(Utils.getUidLoggedIn()) && messageModal.receiver.equals(friendId) ||
+                                messageModal.sender.equals(friendId) && messageModal.receiver.equals(Utils.getUidLoggedIn())){
 
-                            messageModal.let { messages1 ->
-                                messageList.add(messages1)
+                                messageModal.let { messages1 ->
+                                    messageList.add(messages1)
+                                }
                             }
                         }
+                        messages.value = messageList
                     }
-                    messages.value = messageList
                 }
-            }
-        return messages
-    }
+            return messages
+        }
 }

@@ -3,13 +3,12 @@ package com.example.chatapp.model
 import android.os.Parcel
 import android.os.Parcelable
 
-
 data class Users (
     val userid: String? = "",
     val status: String? = "",
     val imageUrl: String? = "",
     val username: String? = "",
-    val userEmail: String? = ""
+    val useremail: String? = ""
 ): Parcelable{
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -24,7 +23,7 @@ data class Users (
         parcel.writeString(status)
         parcel.writeString(imageUrl)
         parcel.writeString(username)
-        parcel.writeString(userEmail)
+        parcel.writeString(useremail)
     }
 
     override fun describeContents(): Int {

@@ -21,7 +21,7 @@ class UsersRepo {
             snapshot?.documents?.forEach { document ->
                 val user = document.toObject(Users::class.java)
 
-                if (user!!.userid != Utils.getUiLoggedIn()) {
+                if (user!!.userid != Utils.getUidLoggedIn()) {
                     user.let {
                         usersList.add(it)
                     }
@@ -32,4 +32,25 @@ class UsersRepo {
         return users
     }
 
+    fun getUserById(userId: String): LiveData<Users> {
+        val users = MutableLiveData<Users>()
+
+        firestore.collection("Users").addSnapshotListener { snapshot, exception ->
+            if (exception != null) {
+                return@addSnapshotListener
+            }
+
+            snapshot?.documents?.forEach { document ->
+                val user = document.toObject(Users::class.java)
+
+                if (user!!.userid != Utils.getUidLoggedIn() && user.userid == userId) {
+                    user.let {
+                        users.value = it
+                    }
+                }
+
+            }
+        }
+        return users
+    }
 }
