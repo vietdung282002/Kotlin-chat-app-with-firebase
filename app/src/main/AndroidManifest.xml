@@ -59,7 +59,6 @@
             </intent-filter>
         </service>
 
-        <receiver android:name="com.example.chatapp.notifications.NotificationReply" />
     </application>
 
 </manifest>
