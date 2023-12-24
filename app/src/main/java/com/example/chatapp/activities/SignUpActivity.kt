@@ -89,13 +89,12 @@ class SignUpActivity : AppCompatActivity() {
                     "userid" to user!!.uid,
                     "username" to name,
                     "useremail" to email,
-                    "status" to "default",
+                    "status" to "Offline",
                     "imageUrl" to "https://www.pngarts.com/files/3/Avatar-Free-PNG-Image.png")
 
                 firestore.collection("Users").document(user.uid).set(hashMap)
                 signUpPd.dismiss()
                 startActivity(Intent(this, SignInActivity::class.java))
-
             }
         }
     }

@@ -10,6 +10,6 @@
         android:icon="@drawable/baseline_people_alt_24"/>
     <item
         android:id="@+id/settingFragment"
-        android:title="Setting"
+        android:title="Profile"
         android:icon="@drawable/baseline_settings_suggest_24"/>
 </menu>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.chatapp.mvvm.ChatAppViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/settingChatContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarMain"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#191970"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/nunito_bold"
+                android:text="Edit Profile"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
+
+
+            <!--        <ImageView-->
+            <!--            android:layout_width="35dp"-->
+            <!--            android:layout_height="35dp"-->
+            <!--            android:id="@+id/logOut"-->
+            <!--            android:layout_gravity="start"-->
+            <!--            android:layout_marginLeft="10dp"-->
+            <!--            android:src="@drawable/logout"/>-->
+
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/settingUpdateImage"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_marginTop="50dp"
+            android:padding="15dp"
+            android:src="@drawable/person"
+            app:civ_border_color="#FE2C54"
+            app:civ_border_width="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarMain" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="fill_parent"
+
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:layout_constraintBottom_toTopOf="@+id/save"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/settingUpdateImage">
+
+            <EditText
+                android:id="@+id/settingUpdateName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="@font/nunito_bold"
+                android:hint="Name"
+                android:importantForAutofill="no"
+                android:inputType="textCapWords"
+                android:maxLength="25"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:text="@={viewModel.name}"
+                tools:background="@android:color/transparent" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="fill_parent"
+
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:layout_constraintBottom_toTopOf="@+id/save"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
+
+            <EditText
+                android:id="@+id/settingUpdateEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="@font/nunito_bold"
+                android:hint="Email"
+                android:importantForAutofill="no"
+                android:inputType="textCapWords"
+                android:maxLength="25"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:text="@={viewModel.email}"
+                tools:background="@android:color/transparent" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="100dp"
+            android:backgroundTint="#191970"
+            android:fontFamily="@font/nunito_bold"
+            android:text="Save"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/change_avatar_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change avatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/settingUpdateImage" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="100dp"
+            android:backgroundTint="#191970"
+            android:fontFamily="@font/nunito_bold"
+            android:text="Cancel"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

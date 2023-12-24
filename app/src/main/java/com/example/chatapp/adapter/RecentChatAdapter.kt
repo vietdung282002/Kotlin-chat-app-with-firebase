@@ -3,10 +3,12 @@ package com.example.chatapp.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.chatapp.R
+import com.example.chatapp.Utils
 import com.example.chatapp.model.RecentChats
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -41,7 +43,7 @@ class RecentChatAdapter: RecyclerView.Adapter<RecentChatHolder>() {
 
         Glide.with(holder.itemView.context).load(recentChatList.friendsImage).into(holder.imageView)
 
-        holder.timeView.text = recentChatList.time!!.substring(0,5)
+        holder.timeView.text = Utils.getTimeDifference(recentChatList.time!!)
 
         holder.itemView.setOnClickListener {
             listener?.getOnRecentChatClicked(position,recentChatList)
@@ -66,5 +68,4 @@ class RecentChatHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val userName: TextView = itemView.findViewById(R.id.recentChatTextName)
     val lastMessage: TextView = itemView.findViewById(R.id.recentChatTextLastMessage)
     val timeView: TextView = itemView.findViewById(R.id.recentChatTextTime)
-
 }

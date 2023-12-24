@@ -12,7 +12,7 @@ data class RecentChats(
     val message: String? = "",
     val person: String? = "",
     val status: String? = "",
-): Parcelable {
+):Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
@@ -22,7 +22,8 @@ data class RecentChats(
         parcel.readString(),
         parcel.readString(),
         parcel.readString()
-    )
+    ) {
+    }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(friendId)

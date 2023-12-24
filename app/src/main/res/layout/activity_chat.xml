@@ -57,7 +57,8 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/nunito_bold"
-                    android:text="User name"
+                    android:text="A"
+                    android:hint="A"
                     android:textColor="#FFFFFF"
                     android:textSize="18sp" />
 
@@ -75,7 +76,8 @@
             android:layout_marginLeft="131dp"
             android:layout_marginTop="37dp"
             android:fontFamily="@font/nunito"
-            android:text="Online"
+            android:text="online"
+            android:hint="online"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />
 

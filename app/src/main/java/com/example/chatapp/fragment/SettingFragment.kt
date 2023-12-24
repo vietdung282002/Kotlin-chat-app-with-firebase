@@ -8,9 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.example.chatapp.activities.EditProfileActivity
 import com.example.chatapp.R
 import com.example.chatapp.activities.SignInActivity
-import com.example.chatapp.databinding.FragmentHomeBinding
 import com.example.chatapp.databinding.FragmentSettingBinding
 import com.example.chatapp.mvvm.ChatAppViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -19,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth
 class SettingFragment : Fragment() {
 
     private lateinit var settingBinding: FragmentSettingBinding
-    private lateinit var userViewModel: ChatAppViewModel
+    private lateinit var settingViewModel: ChatAppViewModel
     private lateinit var fbauth: FirebaseAuth
 
     override fun onCreateView(
@@ -33,14 +34,25 @@ class SettingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userViewModel = ViewModelProvider(this)[ChatAppViewModel::class.java]
+        settingViewModel = ViewModelProvider(this)[ChatAppViewModel::class.java]
         fbauth = FirebaseAuth.getInstance()
         settingBinding.lifecycleOwner = viewLifecycleOwner
+        settingBinding.viewModel = settingViewModel
+
+        settingViewModel.imageUrl.observe(viewLifecycleOwner){
+            it?.let{
+                Glide.with(this).load(it).placeholder(R.drawable.person).dontAnimate().into(settingBinding.settingUpdateImage)
+            }
+        }
 
         settingBinding.logOut.setOnClickListener {
             fbauth.signOut()
             startActivity(Intent(requireActivity(), SignInActivity::class.java))
             activity?.finish()
+        }
+        settingBinding.editBtn.setOnClickListener{
+            val intent = Intent(requireActivity(), EditProfileActivity::class.java)
+            startActivity(intent)
         }
     }
 }

@@ -11,7 +11,6 @@ import com.bumptech.glide.Glide
 import com.example.chatapp.R
 import com.example.chatapp.Utils
 import com.example.chatapp.model.Messages
-import com.example.chatapp.model.Users
 
 class MessageAdapter : RecyclerView.Adapter<ViewHolder>() {
 
@@ -60,7 +59,7 @@ class MessageAdapter : RecyclerView.Adapter<ViewHolder>() {
             rightHolder.timeSent.visibility = View.VISIBLE
 
             rightHolder.messageText.text = message.message
-            rightHolder.timeSent.text = message.time?.substring(0, 5) ?: ""
+            rightHolder.timeSent.text = Utils.getTimeDifference(message.time!!)
         }else{
             val leftViewHolder = holder as LeftViewHolder
             leftViewHolder.messageText.visibility = View.VISIBLE
@@ -69,7 +68,7 @@ class MessageAdapter : RecyclerView.Adapter<ViewHolder>() {
             leftViewHolder.imageUser.visibility = View.VISIBLE
 
             leftViewHolder.messageText.text = message.message
-            leftViewHolder.timeSent.text = message.time?.substring(0, 5) ?: ""
+            leftViewHolder.timeSent.text = Utils.getTimeDifference(message.time!!)
             if(this.userName == null){
                 leftViewHolder.tvUserName.text = ""
             }else{
@@ -83,7 +82,7 @@ class MessageAdapter : RecyclerView.Adapter<ViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int =
-        if (listOfMessage[position].sender == Utils.getUiLoggedIn()) right else left
+        if (listOfMessage[position].sender == Utils.getUidLoggedIn()) right else left
 
     fun setMessageList(newList: List<Messages>){
         this.listOfMessage = newList

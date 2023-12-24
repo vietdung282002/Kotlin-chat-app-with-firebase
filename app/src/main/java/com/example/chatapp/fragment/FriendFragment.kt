@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -55,15 +54,11 @@ class FriendFragment : Fragment(), OnUserClickListener {
         userAdapter.setOnUserClickListener(this)
     }
     override fun onUserSelected(position: Int, users: Users) {
-
-//        val action = HomeFragmentDirections.actionHomeFragmentToChatFragment(users)
-//        view?.findNavController()?.navigate(action)
-//        Toast.makeText(requireContext(), "ClickOn${users.username}", Toast.LENGTH_LONG).show()
         val intent = Intent(requireActivity(), ChatActivity::class.java)
-        val bundle = Bundle()
-        val parcel = users
-        bundle.putParcelable("users",parcel)
-        intent.putExtra("bundle",bundle)
+//        val bundle = Bundle()
+//        bundle.putParcelable("users", users)
+//        intent.putExtra("bundle",bundle)
+        intent.putExtra("userid", users.userid)
         startActivity(intent)
     }
 }

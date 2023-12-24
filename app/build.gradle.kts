@@ -43,6 +43,11 @@ android {
 }
 
 dependencies {
+    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
+    implementation("androidx.compose.ui:ui-text-android:1.5.4")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.google.firebase:firebase-messaging-ktx:23.4.0")
     val nav_version = "2.7.5"
 
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")

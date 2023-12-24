@@ -1,5 +1,6 @@
 package com.example.chatapp.activities
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -17,35 +18,42 @@ import com.example.chatapp.mvvm.ChatAppViewModel
 class ChatActivity : AppCompatActivity() {
 
     private lateinit var chatBinding: ActivityChatBinding
-    private lateinit var viewModel: ChatAppViewModel
+    private lateinit var chatViewModel: ChatAppViewModel
     private lateinit var messageAdapter: MessageAdapter
+    private lateinit var users: Users
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         chatBinding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(chatBinding.root)
-        viewModel = ViewModelProvider(this)[ChatAppViewModel::class.java]
+        chatViewModel = ViewModelProvider(this)[ChatAppViewModel::class.java]
 
-        val bundle = intent.getBundleExtra("bundle")
-        val users = bundle?.getParcelable<Users>("users")
+        val userId = intent.getStringExtra("userid")
+
+        chatViewModel.getUser(userId!!).observe(this){user ->
+            users = user
+            chatViewModel.getMessage(user.userid!!).observe(this){
+                initRecycleView(it,user.username,user.imageUrl)
+            }
+            chatBinding.chatUserStatus.text =  user.status
+            chatBinding.chatUserName.text = user.username
+            Glide.with(this).load(user.imageUrl).into(chatBinding.chatImageViewUser)
+
+        }
+
+        chatBinding.viewModel = chatViewModel
+        chatBinding.lifecycleOwner = this
 
         chatBinding.chatBackBtn.setOnClickListener{
             finish()
         }
 
-        Glide.with(this).load(users?.imageUrl).into(chatBinding.chatImageViewUser)
-
-        chatBinding.chatUserStatus.text =  users?.status
-        chatBinding.chatUserName.text = users?.username
-
-        chatBinding.viewModel = viewModel
-        chatBinding.lifecycleOwner = this
 
         chatBinding.sendBtn.setOnClickListener {
             if(chatBinding.editTextMessage.text.isNotEmpty()){
-                viewModel.sendMessage(
-                    Utils.getUiLoggedIn(),
-                    users?.userid!!,
+                chatViewModel.sendMessage(
+                    Utils.getUidLoggedIn(),
+                    users.userid!!,
                     users.username!!,
                     users.imageUrl!!
                 )
@@ -53,13 +61,10 @@ class ChatActivity : AppCompatActivity() {
         }
 
 
-        viewModel.getMessage(users?.userid!!).observe(this){
-            initRecycleView(it,users.username,users.imageUrl)
-        }
-
 
     }
-    private fun initRecycleView(it: List<Messages>,userName:String?,imageUrl: String?) {
+    @SuppressLint("NotifyDataSetChanged")
+    private fun initRecycleView(it: List<Messages>, userName:String?, imageUrl: String?) {
         messageAdapter = MessageAdapter()
         val layoutManager = LinearLayoutManager(applicationContext)
         chatBinding.messagesRecyclerView.layoutManager = layoutManager
