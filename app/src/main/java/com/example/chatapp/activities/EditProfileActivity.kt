@@ -19,6 +19,8 @@ import com.example.chatapp.TAG
 import com.example.chatapp.Utils
 import com.example.chatapp.databinding.ActivityEditProfileBinding
 import com.example.chatapp.mvvm.ChatAppViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.io.ByteArrayOutputStream
@@ -28,7 +30,9 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var editProfileBinding: ActivityEditProfileBinding
     private lateinit var editProfileViewModel: ChatAppViewModel
     private lateinit var storageRef: StorageReference
-    lateinit var storage: FirebaseStorage
+    lateinit var store: FirebaseStorage
+    private lateinit var auth: FirebaseAuth
+    lateinit var firestore: FirebaseFirestore
     private var uri: Uri? = null
 
     private lateinit var bitmap: Bitmap
@@ -38,14 +42,15 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         editProfileBinding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(editProfileBinding.root)
-
+        auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
         editProfileViewModel = ViewModelProvider(this)[ChatAppViewModel::class.java]
 
         editProfileBinding.viewModel = editProfileViewModel
         editProfileBinding.lifecycleOwner = this
 
-        storage = FirebaseStorage.getInstance()
-        storageRef = storage.reference
+        store = FirebaseStorage.getInstance()
+        storageRef = store.reference
 
         editProfileViewModel.imageUrl.observe(this) {
             loadImage()
@@ -179,8 +184,35 @@ private fun pickImageFromGallery() {
     }
 
     override fun onResume() {
-        Log.d(TAG, "onResume: ")
         loadImage()
+
         super.onResume()
+
+        if (auth.currentUser != null) {
+
+            firestore.collection("Users").document(Utils.getUidLoggedIn())
+                .update("status", "Online")
+        }
     }
+    override fun onStart() {
+        super.onStart()
+
+        if (auth.currentUser != null) {
+            firestore.collection("Users").document(Utils.getUidLoggedIn())
+                .update("status", "Online")
+
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+
+        if (auth.currentUser != null) {
+            firestore.collection("Users").document(Utils.getUidLoggedIn())
+                .update("status", "Offline")
+        }
+    }
+
+
 }

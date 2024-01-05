@@ -49,7 +49,6 @@ class FirebaseService : FirebaseMessagingService() {
 
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("userid",message.data["id"])
-        Log.e("vietdung2802", "intent.putExtra ${message.data["id"]}")
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

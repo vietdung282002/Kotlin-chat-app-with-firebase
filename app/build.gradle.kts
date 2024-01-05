@@ -71,5 +71,7 @@ dependencies {
     implementation("com.rengwuxian.materialedittext:library:2.1.4")
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
 }
 

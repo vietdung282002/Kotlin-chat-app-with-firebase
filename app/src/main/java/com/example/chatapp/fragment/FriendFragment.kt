@@ -7,19 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chatapp.R
 import com.example.chatapp.activities.ChatActivity
 import com.example.chatapp.adapter.OnUserClickListener
 import com.example.chatapp.adapter.UserAdapter
+import com.example.chatapp.adapter.ViewPagerAdapter
 import com.example.chatapp.databinding.FragmentFriendBinding
 import com.example.chatapp.model.Users
 import com.example.chatapp.mvvm.ChatAppViewModel
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 
-class FriendFragment : Fragment(), OnUserClickListener {
+class FriendFragment : Fragment(){
 
     private lateinit var friendBinding: FragmentFriendBinding
     private lateinit var userViewModel: ChatAppViewModel
@@ -37,28 +37,40 @@ class FriendFragment : Fragment(), OnUserClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userViewModel = ViewModelProvider(this)[ChatAppViewModel::class.java]
-        fbauth = FirebaseAuth.getInstance()
-        friendBinding.lifecycleOwner = viewLifecycleOwner
-        userAdapter = UserAdapter()
-        rvUsers = view.findViewById(R.id.rvUsers)
-        val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        rvUsers.layoutManager = layoutManager
-//
-        userViewModel.getUsers().observe(viewLifecycleOwner) {
-            it?.let {
-                userAdapter.setUserList(it)
-                rvUsers.adapter = userAdapter
+        val adapter = ViewPagerAdapter(this)
+        friendBinding.viewPager.adapter = adapter
+        TabLayoutMediator(friendBinding.tabLayout,friendBinding.viewPager){tab,position ->
+            when(position){
+                0 ->{
+                    tab.text = "Friend"
+                }
+                1 ->{
+                    tab.text = "All"
+                }
+                else ->{
+                    tab.text = "Request"
+                }
             }
-        }
-        userAdapter.setOnUserClickListener(this)
+        }.attach()
+//        userViewModel = ViewModelProvider(this)[ChatAppViewModel::class.java]
+//        fbauth = FirebaseAuth.getInstance()
+//        friendBinding.lifecycleOwner = viewLifecycleOwner
+//        userAdapter = UserAdapter()
+//        rvUsers = view.findViewById(R.id.rvUsers)
+//        val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+//        rvUsers.layoutManager = layoutManager
+////
+//        userViewModel.getUsers().observe(viewLifecycleOwner) {
+//            it?.let {
+//                userAdapter.setUserList(it)
+//                rvUsers.adapter = userAdapter
+//            }
+//        }
+//        userAdapter.setOnUserClickListener(this)
     }
-    override fun onUserSelected(position: Int, users: Users) {
-        val intent = Intent(requireActivity(), ChatActivity::class.java)
-//        val bundle = Bundle()
-//        bundle.putParcelable("users", users)
-//        intent.putExtra("bundle",bundle)
-        intent.putExtra("userid", users.userid)
-        startActivity(intent)
-    }
+//    override fun onUserSelected(position: Int, users: Users) {
+//        val intent = Intent(requireActivity(), ChatActivity::class.java)
+//        intent.putExtra("userid", users.userid)
+//        startActivity(intent)
+//    }
 }

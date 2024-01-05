@@ -12,6 +12,8 @@ import com.example.chatapp.databinding.ActivityChatBinding
 import com.example.chatapp.model.Messages
 import com.example.chatapp.model.Users
 import com.example.chatapp.mvvm.ChatAppViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 @Suppress("DEPRECATION")
@@ -21,13 +23,16 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var chatViewModel: ChatAppViewModel
     private lateinit var messageAdapter: MessageAdapter
     private lateinit var users: Users
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         chatBinding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(chatBinding.root)
         chatViewModel = ViewModelProvider(this)[ChatAppViewModel::class.java]
-
+        auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
         val userId = intent.getStringExtra("userid")
 
         chatViewModel.getUser(userId!!).observe(this){user ->
@@ -73,5 +78,37 @@ class ChatActivity : AppCompatActivity() {
         messageAdapter.setUser(userName!!,imageUrl!!)
         messageAdapter.notifyDataSetChanged()
         chatBinding.messagesRecyclerView.adapter = messageAdapter
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (auth.currentUser != null) {
+
+
+            firestore.collection("Users").document(Utils.getUidLoggedIn())
+                .update("status", "Online")
+
+
+        }
+    }
+    override fun onStart() {
+        super.onStart()
+
+        if (auth.currentUser != null) {
+            firestore.collection("Users").document(Utils.getUidLoggedIn())
+                .update("status", "Online")
+
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+
+        if (auth.currentUser != null) {
+            firestore.collection("Users").document(Utils.getUidLoggedIn())
+                .update("status", "Offline")
+        }
     }
 }

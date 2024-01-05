@@ -32,8 +32,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
         viewModel = ViewModelProvider(this)[ChatAppViewModel::class.java]
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
@@ -52,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
         generateToken()
         Log.e("vietdung2802", "intent.getStringExtra ${intent.getStringExtra("userid")}")
-        if(intent.getStringExtra("userid") != null){
+        if (intent.getStringExtra("userid") != null) {
             val id = intent.getStringExtra("userid")
             val intent = Intent(this, ChatActivity::class.java)
             intent.putExtra("userid", id)
@@ -60,57 +58,45 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+        override fun onResume() {
+            super.onResume()
 
-        if (auth.currentUser != null) {
+            if (auth.currentUser != null) {
+                firestore.collection("Users").document(Utils.getUidLoggedIn())
+                    .update("status", "Online")
 
-
-            firestore.collection("Users").document(Utils.getUidLoggedIn())
-                .update("status", "Online")
-
-
+            }
         }
-    }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-
-        if (auth.currentUser != null) {
-
-
-            firestore.collection("Users").document(Utils.getUidLoggedIn())
-                .update("status", "Offline")
-
-
+        override fun onStart() {
+            super.onStart()
+            if (auth.currentUser != null) {
+                firestore.collection("Users").document(Utils.getUidLoggedIn())
+                    .update("status", "Online")
+            }
         }
-    }
 
-    override fun onStart() {
-        super.onStart()
-
-        if (auth.currentUser != null) {
-            firestore.collection("Users").document(Utils.getUidLoggedIn())
-                .update("status", "Online")
-
+        override fun onPause() {
+            super.onPause()
+            if (auth.currentUser != null) {
+                firestore.collection("Users").document(Utils.getUidLoggedIn())
+                    .update("status", "Offline")
+            }
         }
-    }
 
 
     private fun generateToken() {
         val firebaseInstance = FirebaseInstallations.getInstance()
 
         firebaseInstance.id.addOnSuccessListener { installationid ->
-            FirebaseMessaging.getInstance().token.addOnSuccessListener { gettocken ->
+            FirebaseMessaging.getInstance().token.addOnSuccessListener { gettoken ->
 
-                token = gettocken
+                token = gettoken
 
-                val hasHamp = hashMapOf<String, Any>("token" to token)
+                val hashMap = hashMapOf<String, Any>("token" to token)
 
-                firestore.collection("Tokens").document(Utils.getUidLoggedIn()).set(hasHamp)
+                firestore.collection("Tokens").document(Utils.getUidLoggedIn()).set(hashMap)
                     .addOnSuccessListener {
-
 
                     }
             }
