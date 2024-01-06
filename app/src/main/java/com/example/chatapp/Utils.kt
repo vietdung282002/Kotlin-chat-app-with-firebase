@@ -14,6 +14,11 @@ class Utils {
         const val REQUEST_IMAGE_CAPTURE = 1
         const val REQUEST_IMAGE_PICK = 2
 
+        const val NOT_RELATION = 0
+        const val FRIEND = 1
+        const val FRIEND_REQUEST = 2
+        const val REQUESTED_FRIEND= 3
+
         fun getUidLoggedIn(): String {
             if (auth.currentUser != null) {
                 userid = auth.currentUser!!.uid
@@ -63,16 +68,16 @@ class Utils {
 
                         days < 7 -> {
 
-                            "${oneWeekdateFormatter.format(postDate)}"
+                            "${postDate?.let { oneWeekdateFormatter.format(it) }}"
                         }
 
                         days < 365 -> {
 
-                            "${moreThanOneWeekDateFormatter.format(postDate)}"
+                            "${postDate?.let { moreThanOneWeekDateFormatter.format(it) }}"
                         }
 
                         else -> {
-                            "${moreThanOneYearDateFormatter.format(postDate)}"
+                            "${postDate?.let { moreThanOneYearDateFormatter.format(it) }}"
                         }
 
                     }
@@ -80,7 +85,7 @@ class Utils {
 
                 days == 0 -> {
 
-                    "${inDayDateFormatter.format(postDate)}"
+                    "${postDate?.let { inDayDateFormatter.format(it) }}"
                 }
 
                 else -> ""

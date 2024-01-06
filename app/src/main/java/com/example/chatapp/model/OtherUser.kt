@@ -2,8 +2,9 @@ package com.example.chatapp.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.example.chatapp.Utils.Companion.NOT_RELATION
 
-data class Users (
+data class OtherUser(
     val userid: String? = "",
     val status: String? = "",
     val imageUrl: String? = "",
@@ -12,7 +13,8 @@ data class Users (
     val friendLists : ArrayList<String>? = arrayListOf<String>(),
     val friendRequested : ArrayList<String>? = arrayListOf<String>(),
     val friendRequests : ArrayList<String>? = arrayListOf<String>(),
-):Parcelable{
+    var relation: Int? = NOT_RELATION
+): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
@@ -21,7 +23,8 @@ data class Users (
         parcel.readString(),
         parcel.createStringArrayList(),
         parcel.createStringArrayList(),
-        parcel.createStringArrayList()
+        parcel.createStringArrayList(),
+        parcel.readValue(Int::class.java.classLoader) as? Int
     ) {
     }
 
@@ -31,24 +34,21 @@ data class Users (
         parcel.writeString(imageUrl)
         parcel.writeString(username)
         parcel.writeString(useremail)
-        parcel.writeStringList(friendLists)
-        parcel.writeStringList(friendRequested)
-        parcel.writeStringList(friendRequests)
+        parcel.writeValue(relation)
     }
 
     override fun describeContents(): Int {
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<Users> {
-        override fun createFromParcel(parcel: Parcel): Users {
-            return Users(parcel)
+    companion object CREATOR : Parcelable.Creator<OtherUser> {
+        override fun createFromParcel(parcel: Parcel): OtherUser {
+            return OtherUser(parcel)
         }
 
-        override fun newArray(size: Int): Array<Users?> {
+        override fun newArray(size: Int): Array<OtherUser?> {
             return arrayOfNulls(size)
         }
     }
-
 
 }

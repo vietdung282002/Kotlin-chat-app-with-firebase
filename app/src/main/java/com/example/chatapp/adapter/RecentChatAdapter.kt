@@ -16,7 +16,7 @@ class RecentChatAdapter: RecyclerView.Adapter<RecentChatHolder>() {
     private var listener: OnRecentChatClicked? = null
     private var recentModel = RecentChats()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecentChatHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.recentchatlist,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.recent_chat_list,parent,false)
         return RecentChatHolder(view)
     }
 

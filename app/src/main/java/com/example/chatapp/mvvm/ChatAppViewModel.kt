@@ -10,12 +10,14 @@ import com.example.chatapp.MyApplication
 import com.example.chatapp.SharedPrefs
 import com.example.chatapp.Utils
 import com.example.chatapp.model.Messages
+import com.example.chatapp.model.OtherUser
 import com.example.chatapp.model.RecentChats
 import com.example.chatapp.model.Users
 import com.example.chatapp.notifications.entity.NotificationData
 import com.example.chatapp.notifications.entity.PushNotification
 import com.example.chatapp.notifications.entity.Token
 import com.example.chatapp.notifications.network.RetrofitInstance
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,6 +29,9 @@ class ChatAppViewModel : ViewModel() {
     val imageUrl = MutableLiveData<String>()
     private val status = MutableLiveData<String>()
     val message = MutableLiveData<String>()
+    val friendLists = MutableLiveData<ArrayList<String>>()
+    val friendRequested = MutableLiveData<ArrayList<String>>()
+    val friendRequests = MutableLiveData<ArrayList<String>>()
 
     private val firestore = FirebaseFirestore.getInstance()
 
@@ -35,12 +40,31 @@ class ChatAppViewModel : ViewModel() {
     private val chatListRepo = ChatListRepo()
     private val mySharedPrefs = SharedPrefs(MyApplication.instance.applicationContext)
 
+
     init {
         getCurrentUser()
+
     }
 
-    fun getUsers(): LiveData<List<Users>> {
-        return usersRepo.getUsers()
+    //
+    fun getUsers(
+        friendList: ArrayList<String>,
+        friendRequested: ArrayList<String>,
+        friendRequests: ArrayList<String>,
+    ): LiveData<List<OtherUser>> {
+        return usersRepo.getUsers(friendList, friendRequested, friendRequests)
+    }
+
+    fun getFriendUsers(friendList: ArrayList<String>): LiveData<List<OtherUser>> {
+        return usersRepo.getFriendUsers(friendList)
+    }
+
+    fun getFriendRequestedUsers(friendRequested: ArrayList<String>): LiveData<List<OtherUser>> {
+        return usersRepo.getFriendRequestedUsers(friendRequested)
+    }
+
+    fun getFriendRequestsUsers(friendRequests: ArrayList<String>): LiveData<List<OtherUser>> {
+        return usersRepo.getFriendRequestsUsers(friendRequests)
     }
 
 
@@ -56,9 +80,11 @@ class ChatAppViewModel : ViewModel() {
                     email.value = users.useremail!!
                     status.value = users.status!!
                     imageUrl.value = users.imageUrl!!
+                    friendLists.value = users.friendLists!!
+                    friendRequested.value = users.friendRequested!!
+                    friendRequests.value = users.friendRequests!!
                     mySharedPrefs.setValue("name", users.username)
                     mySharedPrefs.setValue("username", users.imageUrl)
-
                 }
             }
     }
@@ -117,7 +143,11 @@ class ChatAppViewModel : ViewModel() {
                                 val tokenObject = value.toObject(Token::class.java)
                                 if (message.value!!.isNotEmpty() && receiver.isNotEmpty() && tokenObject != null) {
                                     PushNotification(
-                                        NotificationData(userId.value!!, name.value!!, message.value!!), tokenObject.token!!
+                                        NotificationData(
+                                            userId.value!!,
+                                            name.value!!,
+                                            message.value!!
+                                        ), tokenObject.token!!
                                     ).also {
                                         sendNotification(it)
                                     }
@@ -137,7 +167,8 @@ class ChatAppViewModel : ViewModel() {
     private fun sendNotification(notification: PushNotification) = viewModelScope.launch {
         try {
             val response = RetrofitInstance.api.postNotification(notification)
-        } catch (e: Exception) { }
+        } catch (e: Exception) {
+        }
     }
 
     fun updateProfile() = viewModelScope.launch(Dispatchers.IO) {
@@ -183,11 +214,75 @@ class ChatAppViewModel : ViewModel() {
 
     }
 
+    fun addFriend(sender: String, receiver: String) = viewModelScope.launch(Dispatchers.IO) {
+        firestore.collection("Users").document(sender).update(
+            hashMapOf<String, Any>("friendRequested" to FieldValue.arrayUnion(receiver))
+        ).addOnSuccessListener {
+
+        }.addOnFailureListener { e ->
+
+        }
+
+        firestore.collection("Users").document(receiver).update(
+            hashMapOf<String, Any>("friendRequests" to FieldValue.arrayUnion(sender))
+        ).addOnSuccessListener {
+
+        }.addOnFailureListener { e ->
+
+        }
+    }
+
+    fun removeRequestFriend(sender: String, receiver: String) = viewModelScope.launch(Dispatchers.IO) {
+        firestore.collection("Users").document(sender).update(
+            hashMapOf<String, Any>("friendRequested" to FieldValue.arrayRemove(receiver))
+        ).addOnSuccessListener {
+
+        }.addOnFailureListener { e ->
+
+        }
+
+        firestore.collection("Users").document(receiver).update(
+            hashMapOf<String, Any>("friendRequests" to FieldValue.arrayRemove(sender))
+        ).addOnSuccessListener {
+
+        }.addOnFailureListener { e ->
+
+        }
+    }
+
+    fun acceptFriendRequest(sender: String, receiver: String) = viewModelScope.launch(Dispatchers.IO) {
+        Log.d("vietdung282002", "$sender, $receiver ")
+        firestore.collection("Users").document(sender).update(
+            hashMapOf<String, Any>("friendRequests" to FieldValue.arrayRemove(receiver))
+        ).addOnSuccessListener {
+            firestore.collection("Users").document(sender).update((
+                    hashMapOf<String, Any>("friendLists" to FieldValue.arrayUnion(receiver))
+                    )).addOnSuccessListener {
+
+            }
+        }.addOnFailureListener { e ->
+
+        }
+
+        firestore.collection("Users").document(receiver).update(
+            hashMapOf<String, Any>("friendRequested" to FieldValue.arrayRemove(sender))
+        ).addOnSuccessListener {
+            // Thành công
+            firestore.collection("Users").document(receiver).update((
+                    hashMapOf<String, Any>("friendLists" to FieldValue.arrayUnion(sender))
+                    )).addOnSuccessListener {
+
+            }
+        }.addOnFailureListener { e ->
+
+        }
+    }
+
     fun getMessage(friendId: String): LiveData<List<Messages>> {
         return messageRepo.getMessage(friendId)
     }
 
-    fun getUser(id: String): LiveData<Users> {
+    fun getUser(id: String): LiveData<OtherUser> {
         return usersRepo.getUserById(id)
     }
 

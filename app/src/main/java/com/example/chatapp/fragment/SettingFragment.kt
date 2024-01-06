@@ -11,10 +11,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.chatapp.activities.EditProfileActivity
 import com.example.chatapp.R
+import com.example.chatapp.Utils
 import com.example.chatapp.activities.SignInActivity
 import com.example.chatapp.databinding.FragmentSettingBinding
 import com.example.chatapp.mvvm.ChatAppViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class SettingFragment : Fragment() {
@@ -22,6 +24,7 @@ class SettingFragment : Fragment() {
     private lateinit var settingBinding: FragmentSettingBinding
     private lateinit var settingViewModel: ChatAppViewModel
     private lateinit var fbauth: FirebaseAuth
+    lateinit var firestore: FirebaseFirestore
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +41,7 @@ class SettingFragment : Fragment() {
         fbauth = FirebaseAuth.getInstance()
         settingBinding.lifecycleOwner = viewLifecycleOwner
         settingBinding.viewModel = settingViewModel
-
+        firestore = FirebaseFirestore.getInstance()
         settingViewModel.imageUrl.observe(viewLifecycleOwner){
             it?.let{
                 Glide.with(this).load(it).placeholder(R.drawable.person).dontAnimate().into(settingBinding.settingUpdateImage)
@@ -46,13 +49,16 @@ class SettingFragment : Fragment() {
         }
 
         settingBinding.logOut.setOnClickListener {
-            fbauth.signOut()
+            firestore.collection("Users").document(Utils.getUidLoggedIn())
+                .update("status", "Offline")
             startActivity(Intent(requireActivity(), SignInActivity::class.java))
             activity?.finish()
+            fbauth.signOut()
         }
         settingBinding.editBtn.setOnClickListener{
             val intent = Intent(requireActivity(), EditProfileActivity::class.java)
             startActivity(intent)
         }
     }
+
 }

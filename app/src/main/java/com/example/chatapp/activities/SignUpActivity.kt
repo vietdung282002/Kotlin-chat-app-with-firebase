@@ -83,6 +83,7 @@ class SignUpActivity : AppCompatActivity() {
         signUpPd.setMessage("Signing Up")
 
         signUpAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
+            val emptyArray = arrayListOf<String>()
             if(it.isSuccessful){
                 val user = signUpAuth.currentUser
                 val hashMap = hashMapOf(
@@ -90,7 +91,12 @@ class SignUpActivity : AppCompatActivity() {
                     "username" to name,
                     "useremail" to email,
                     "status" to "Offline",
-                    "imageUrl" to "https://www.pngarts.com/files/3/Avatar-Free-PNG-Image.png")
+                    "imageUrl" to "https://www.pngarts.com/files/3/Avatar-Free-PNG-Image.png",
+                    "friendLists" to emptyArray,
+                    "friendRequested" to emptyArray,
+                    "friendRequests" to emptyArray
+                    )
+
 
                 firestore.collection("Users").document(user.uid).set(hashMap)
                 signUpPd.dismiss()
