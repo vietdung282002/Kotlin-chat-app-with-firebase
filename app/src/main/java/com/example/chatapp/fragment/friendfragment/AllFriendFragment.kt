@@ -31,8 +31,7 @@ class AllFriendFragment : Fragment(), OnUserClickListener {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        allFriendBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_all_friend, container, false)
+        allFriendBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_all_friend, container, false)
         return allFriendBinding.root
     }
 

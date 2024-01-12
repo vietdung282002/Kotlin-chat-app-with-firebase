@@ -48,11 +48,18 @@ class ChatAppViewModel : ViewModel() {
 
     //
     fun getUsers(
-        friendList: ArrayList<String>,
-        friendRequested: ArrayList<String>,
-        friendRequests: ArrayList<String>,
+        friendList: ArrayList<String>?,
+        friendRequested: ArrayList<String>?,
+        friendRequests: ArrayList<String>?,
     ): LiveData<List<OtherUser>> {
-        return usersRepo.getUsers(friendList, friendRequested, friendRequests)
+        if(friendList != null &&
+            friendRequested!= null &&
+            friendRequests!= null){
+            return usersRepo.getUsers(friendList, friendRequested, friendRequests)
+        }else{
+            val list = arrayListOf<String>()
+            return usersRepo.getUsers(list, list, list)
+        }
     }
 
     fun getFriendUsers(friendList: ArrayList<String>): LiveData<List<OtherUser>> {
