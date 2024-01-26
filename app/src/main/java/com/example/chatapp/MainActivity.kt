@@ -9,9 +9,9 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
-import com.example.chatapp.activities.ChatActivity
+import com.example.chatapp.views.activities.ChatActivity
 import com.example.chatapp.databinding.ActivityMainBinding
-import com.example.chatapp.mvvm.ChatAppViewModel
+import com.example.chatapp.viewmodel.ChatAppViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.installations.FirebaseInstallations

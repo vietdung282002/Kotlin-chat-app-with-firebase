@@ -5,15 +5,17 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.chatapp.mvvm.ChatAppViewModel" />
+            type="com.example.chatapp.viewmodel.ChatAppViewModel" />
     </data>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/settingChatContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarMain"
@@ -24,6 +26,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <ImageView
+                android:id="@+id/backBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/back"
+                />
 
             <TextView
                 android:layout_width="wrap_content"

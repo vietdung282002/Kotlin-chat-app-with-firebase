@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.chatapp.fragment.HomeFragment"
+        android:name="com.example.chatapp.views.fragment.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.chatapp.fragment.SettingFragment"
+        android:name="com.example.chatapp.views.fragment.SettingFragment"
         android:label="SettingFragment"
         tools:layout="@layout/fragment_setting">
         <action
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/friendFragment"
-        android:name="com.example.chatapp.fragment.FriendFragment"
+        android:name="com.example.chatapp.views.fragment.FriendFragment"
         android:label="FriendFragment"
         tools:layout="@layout/fragment_friend">
         <action

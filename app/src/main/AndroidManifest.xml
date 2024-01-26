@@ -20,16 +20,16 @@
         android:theme="@style/Theme.ChatApp"
         tools:targetApi="31">
         <activity
-            android:name=".activities.EditProfileActivity"
+            android:name=".views.activities.EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.ChatActivity"
+            android:name=".views.activities.ChatActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.SignUpActivity"
+            android:name=".views.activities.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.SignInActivity"
+            android:name=".views.activities.SignInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,7 +47,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".notifications.FirebaseService"
+        <service android:name=".model.FirebaseService"
             android:permission="com.google.android.c2dm.permission.SEND"
             android:exported="false"
             android:enabled="true">

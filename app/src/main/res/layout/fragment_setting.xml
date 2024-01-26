@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.chatapp.mvvm.ChatAppViewModel" />
+            type="com.example.chatapp.viewmodel.ChatAppViewModel" />
 
 
 
